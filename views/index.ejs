@@ -17,6 +17,9 @@
 		crontabs = JSON.parse('<%- crontabs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
 		routes = JSON.parse('<%- routes %>');
 		$("#env_vars").val(`<%- env  %>`);
+		for (var key in routes) {
+			routes[key] = "/crontab" + routes[key];
+		}
 	})
 </script>
 </head>
@@ -82,7 +85,7 @@
 		<!-- controls based on crontab state -->
 		<% if (!crontab.stopped) { %>
 			<% if (crontab.logging && crontab.logging != "false") {%>
-					<a class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="See Log" href="<%= JSON.parse(routes).logger + '?id=' + crontab._id %>" target="_blank"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
+					<a class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="See Log" href="<%= '/crontab/' + JSON.parse(routes).logger + '?id=' + crontab._id %>" target="_blank"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
 			<% } %>
 					<a class="btn btn-primary" onclick="editJob('<%= crontab._id %>')"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit</a>
 					<a class="btn btn-info" onclick="stopJob('<%= crontab._id %>')"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop</a>
